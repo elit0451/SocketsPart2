@@ -13,7 +13,7 @@ namespace Client
     {
         static void Main(string[] args)
         {
-            TcpClient server = new TcpClient("10.140.66.126", 11000);
+            TcpClient server = new TcpClient("10.140.64.224", 11000);
 
             string serverMessage = "";
 

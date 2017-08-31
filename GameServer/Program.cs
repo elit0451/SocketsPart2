@@ -22,91 +22,82 @@ namespace GameServer
             while (true)
             {
                 client = listener.AcceptSocket();
-                ThreadPool.QueueUserWorkItem(ThreadProc, client);
+                Console.WriteLine("A client just connected.");
+
+                Client c = new Client(client);
+                Thread clientThread = new Thread(c.Run);
+                clientThread.Start();
+                
             }
         }
 
-        private static void ThreadProc(object obj)
-        {
-            Socket client = (Socket)obj;
+        //private static void ThreadProc(object obj)
+        //{
 
-            Console.WriteLine("A client just connected.");
 
-            while (client.Connected == true)
-            {
-                NetworkStream stream = new NetworkStream(client);
-                StreamReader reader = new StreamReader(stream);
-                StreamWriter writer = new StreamWriter(stream);
+        //    while (client.Connected == true)
+        //    {
+        //        bool isRunning = true;
+                
+        //        do
+        //        {
+        //            if (numTries == 10)
+        //            {
+        //                writer.WriteLine("Guess a number between 1 and 10");
+        //            }
+        //            else
+        //            {
+        //                writer.WriteLine("Wrong answer, you got " + numTries + " more tries");
+        //            }
+        //            numTries--;
+                    
+        //            string clientMessage = reader.ReadLine();
+        //            if (clientMessage != "")
+        //            {
+        //                if (clientMessage == "exit")
+        //                {
+        //                    isRunning = false;
+        //                }
+        //                else if (numTries != 0)
+        //                {
+        //                    if (int.Parse(clientMessage) == pickedNum)
+        //                    {
+        //                        writer.WriteLine("Great! Just " + (10 - numTries) + " guess. Do you want to try again? (y/n)");
+        //                        clientMessage = reader.ReadLine();
 
-                writer.AutoFlush = true;
+        //                        if (clientMessage == "y")
+        //                        {
+        //                            numTries = 10;
+        //                            pickedNum = randomNum.Next(1, 10);
+        //                        }
+        //                        else
+        //                        {
+        //                            isRunning = false;
+        //                        }
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    writer.WriteLine("You didn't manage to guess the right number (" + pickedNum + "). Do you want to try again? (y/n)");
+        //                    clientMessage = reader.ReadLine();
 
-                Random randomNum = new Random();
-                int pickedNum = randomNum.Next(1, 10);
-                Console.WriteLine(pickedNum);
-                bool isRunning = true;
+        //                    if (clientMessage == "y")
+        //                    {
+        //                        numTries = 10;
+        //                        pickedNum = randomNum.Next(1, 10);
+        //                    }
+        //                    else
+        //                    {
+        //                        isRunning = false;
+        //                    }
+        //                }
 
-                int numTries = 10;
+        //            }
+        //        } while (isRunning == true);
 
-                do
-                {
-                    if (numTries == 10)
-                    {
-                        writer.WriteLine("Guess a number between 1 and 10");
-                    }
-                    else
-                    {
-                        writer.WriteLine("Wrong answer, you got " + numTries + " more tries");
-                    }
-                    numTries--;
-
-                    string clientMessage = reader.ReadLine();
-                    if (clientMessage != "")
-                    {
-                        if (clientMessage == "exit")
-                        {
-                            isRunning = false;
-                        }
-                        else if (numTries != 0)
-                        {
-                            if (int.Parse(clientMessage) == pickedNum)
-                            {
-                                writer.WriteLine("Great! Just " + (10 - numTries) + " guess. Do you want to try again? (y/n)");
-                                clientMessage = reader.ReadLine();
-
-                                if (clientMessage == "y")
-                                {
-                                    numTries = 10;
-                                    pickedNum = randomNum.Next(1, 10);
-                                }
-                                else
-                                {
-                                    isRunning = false;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            writer.WriteLine("You didn't manage to guess the right number (" + pickedNum + "). Do you want to try again? (y/n)");
-                            clientMessage = reader.ReadLine();
-
-                            if (clientMessage == "y")
-                            {
-                                numTries = 10;
-                                pickedNum = randomNum.Next(1, 10);
-                            }
-                            else
-                            {
-                                isRunning = false;
-                            }
-                        }
-
-                    }
-                } while (isRunning == true);
-
-                writer.WriteLine("Goodbye");
-                client.Disconnect(false);
-            }
-
-        }
+        //        writer.WriteLine("Goodbye");
+        //        client.Disconnect(false);
+        //    }
+        
     }
 }

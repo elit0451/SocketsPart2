@@ -12,17 +12,18 @@ namespace GameClient
     {
         static void Main(string[] args)
         {
-            TcpClient server = new TcpClient("10.140.66.126", 11000);
+            TcpClient server = new TcpClient("localhost", 11000);
+
+            NetworkStream stream = server.GetStream();
+            StreamReader reader = new StreamReader(stream);
+            StreamWriter writer = new StreamWriter(stream);
+
+            writer.AutoFlush = true;
 
             string serverMessage = "";
 
             while (serverMessage != "Goodbye")
             {
-                NetworkStream stream = server.GetStream();
-                StreamReader reader = new StreamReader(stream);
-                StreamWriter writer = new StreamWriter(stream);
-
-                writer.AutoFlush = true;
 
                 serverMessage = reader.ReadLine();
                 Console.WriteLine(serverMessage);
